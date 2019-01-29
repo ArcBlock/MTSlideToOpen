@@ -20,7 +20,7 @@ public class MTSlideToOpenView: UIView {
     }()
     public let thumnailImageView: UIImageView = {
         let view = MTRoundImageView()
-        view.isUserInteractionEnabled = true        
+        view.isUserInteractionEnabled = true
         view.contentMode = .center
         return view
     }()
@@ -47,7 +47,7 @@ public class MTSlideToOpenView: UIView {
     }
     public var thumbnailViewLeadingDistance: CGFloat = 0.0 {
         didSet {
-            updateThumbnailViewLeadingPosition(thumbnailViewLeadingDistance)            
+            updateThumbnailViewLeadingPosition(thumbnailViewLeadingDistance)
         }
     }
     public var textLabelLeadingDistance: CGFloat = 0 {
@@ -74,7 +74,7 @@ public class MTSlideToOpenView: UIView {
             sliderHolderView.backgroundColor = defaultSliderBackgroundColor
         }
     }
-    
+
     public var defaultSlidingColor:UIColor = UIColor(red:25.0/255, green:155.0/255, blue:215.0/255, alpha:0.7) {
         didSet {
             draggedView.backgroundColor = defaultSlidingColor
@@ -97,22 +97,22 @@ public class MTSlideToOpenView: UIView {
     private var xPositionInThumbnailView: CGFloat = 0
     private var xEndingPoint: CGFloat {
         get {
-            return (self.view.frame.maxX - thumnailImageView.bounds.height)
+            return (self.view.frame.maxX - thumnailImageView.bounds.height - thumbnailViewLeadingDistance)
         }
     }
     private var isFinished: Bool = false
-    
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     private var panGestureRecognizer: UIPanGestureRecognizer!
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        setupView()        
+        setupView()
     }
-    
+
     private func setupView() {
         self.addSubview(view)
         view.addSubview(thumnailImageView)
@@ -127,7 +127,7 @@ public class MTSlideToOpenView: UIView {
         panGestureRecognizer.minimumNumberOfTouches = 1
         thumnailImageView.addGestureRecognizer(panGestureRecognizer)
     }
-    
+
     private func setupConstraint() {
         view.translatesAutoresizingMaskIntoConstraints = false
         thumnailImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +163,7 @@ public class MTSlideToOpenView: UIView {
         draggedView.bottomAnchor.constraint(equalTo: sliderHolderView.bottomAnchor).isActive = true
         draggedView.trailingAnchor.constraint(equalTo: thumnailImageView.trailingAnchor).isActive = true
     }
-    
+
     private func setStyle() {
         thumnailImageView.backgroundColor = defaultThumbnailColor
         textLabel.text = defaultLabelText
@@ -175,16 +175,16 @@ public class MTSlideToOpenView: UIView {
         draggedView.backgroundColor = defaultSlidingColor
         draggedView.layer.cornerRadius = sliderCornerRadious
     }
-    
+
     private func isTapOnThumbnailViewWithPoint(_ point: CGPoint) -> Bool{
         return self.thumnailImageView.frame.contains(point)
     }
-    
+
     private func updateThumbnailViewLeadingPosition(_ x: CGFloat) {
         leadingThumbnailViewConstraint?.constant = x
         setNeedsLayout()
     }
-    
+
     // MARK: UIPanGestureRecognizer
     @objc private func handlePanGesture(_ sender: UIPanGestureRecognizer) {
         if isFinished || !isEnabled {
