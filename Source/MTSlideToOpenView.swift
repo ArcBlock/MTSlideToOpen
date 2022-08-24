@@ -50,6 +50,16 @@ public class MTSlideToOpenView: UIView {
             updateThumbnailViewLeadingPosition(thumbnailViewLeadingDistance)
         }
     }
+    public var thumbnailViewTopDistance: CGFloat = 0.0 {
+        didSet {
+            updateThumbnailViewTopPosition(thumbnailViewLeadingDistance)
+        }
+    }
+    public var thumbnailViewBottomDistance: CGFloat = 0.0 {
+        didSet {
+            updateThumbnailViewBottomPosition(thumbnailViewBottomDistance)
+        }
+    }
     public var textLabelLeadingDistance: CGFloat = 0 {
         didSet {
             leadingTextLabelConstraint?.constant = textLabelLeadingDistance
@@ -92,6 +102,8 @@ public class MTSlideToOpenView: UIView {
     }
     // MARK: Private Properties
     private var leadingThumbnailViewConstraint: NSLayoutConstraint?
+    private var topThumbnailViewConstraint: NSLayoutConstraint?
+    private var bottomThumbnailViewConstraint: NSLayoutConstraint?
     private var leadingTextLabelConstraint: NSLayoutConstraint?
     private var topSliderConstraint: NSLayoutConstraint?
     private var xPositionInThumbnailView: CGFloat = 0
@@ -142,8 +154,10 @@ public class MTSlideToOpenView: UIView {
         // Setup for circle View
         leadingThumbnailViewConstraint = thumnailImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         leadingThumbnailViewConstraint?.isActive = true
-        thumnailImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        thumnailImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        topThumbnailViewConstraint = thumnailImageView.topAnchor.constraint(equalTo: view.topAnchor)
+        topThumbnailViewConstraint?.isActive = true
+        bottomThumbnailViewConstraint = thumnailImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomThumbnailViewConstraint?.isActive = true
         thumnailImageView.heightAnchor.constraint(equalTo: thumnailImageView.widthAnchor).isActive = true
         // Setup for slider holder view
         topSliderConstraint = sliderHolderView.topAnchor.constraint(equalTo: view.topAnchor, constant: sliderViewTopDistance)
@@ -182,6 +196,16 @@ public class MTSlideToOpenView: UIView {
 
     private func updateThumbnailViewLeadingPosition(_ x: CGFloat) {
         leadingThumbnailViewConstraint?.constant = x
+        setNeedsLayout()
+    }
+    
+    private func updateThumbnailViewTopPosition(_ x: CGFloat) {
+        topThumbnailViewConstraint?.constant = x
+        setNeedsLayout()
+    }
+    
+    private func updateThumbnailViewBottomPosition(_ x: CGFloat) {
+        bottomThumbnailViewConstraint?.constant = x
         setNeedsLayout()
     }
 
